@@ -1,5 +1,7 @@
 # XPS 15 9570 - Nvidia Switchable
 
+(This is a copy of the answer on [this](https://bbs.archlinux.org/viewtopic.php?id=238389) thread)
+
 Guide to setup on/off operation of GPU. Based on works collected in [this](https://bbs.archlinux.org/viewtopic.php?id=238389) thread.
 
 GPU management scripts were created by [tyrells](https://bbs.archlinux.org/viewtopic.php?pid=1825298#p1825298) to which manipulation of blacklist config was added.
@@ -84,7 +86,7 @@ GPU management scripts were created by [tyrells](https://bbs.archlinux.org/viewt
 
 Create two following management scripts. Creation of aliases is recommended.
 
-### enableGpu.sh
+### [enable-gpu.sh](enable-gpu.sh)
 ``` bash
 #!/bin/sh
 # allow to load nvidia module
@@ -100,7 +102,7 @@ sleep 1
 echo -n 1 > /sys/bus/pci/rescan
 ```
 
-### disableGpu.sh
+### [disable-gpu.sh](disable-gpu.sh)
 ``` bash
 modprobe -r nvidia_drm
 modprobe -r nvidia_uvm
@@ -119,7 +121,7 @@ mv /etc/modprobe.d/disable-nvidia.conf.disable /etc/modprobe.d/disable-nvidia.co
 ```
 
 ## Create service which locks GPU on shutdown
-Service which locks GPU on shutdown / restart when it is not disabled by *disableGpu.sh* script is necessary. Otherwise on next boot nvidia will be loaded together with *ipmi* modules (even if we have blacklist with *install* command for them) and it would not be possible to unload them.
+Service which locks GPU on shutdown / restart when it is not disabled by *disable-gpu.sh* script is necessary. Otherwise on next boot nvidia will be loaded together with *ipmi* modules (even if we have blacklist with *install* command for them) and it would not be possible to unload them.
 
 ### /etc/systemd/system/disable-nvidia-on-shutdown.service
 ```
